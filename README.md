@@ -1,2 +1,0 @@
-# EasyList
-Created with CodeSandbox
