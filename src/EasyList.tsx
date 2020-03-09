@@ -3,47 +3,53 @@ import { useState } from "react";
 import { ScrollView, View, LayoutChangeEvent } from "react-native";
 
 export interface EasyListProps {
-    aheadCount: number;
-    children: React.ReactNodeArray | undefined;
+  aheadCount: number;
+  children: React.ReactNodeArray | undefined;
 }
 
 export function EasyList(props: EasyListProps) {
-    const initialValue: Record<number, number[]> = {};
-    const [heightTracker] = useState(initialValue);
-    const callback = (index: number, height: number, width: number): void => {
-        heightTracker[index] = [height, width];
-    }
-    return (
-        <ScrollView>
-            <View style={{ height: 600 }} />
-            {getChildren(props, 0, callback)}
-        </ScrollView>
-    );
+  const initialValue: Record<number, number[]> = {};
+  const [heightTracker] = useState(initialValue);
+  const callback = (index: number, height: number, width: number): void => {
+    heightTracker[index] = [height, width];
+  };
+  return (
+    <ScrollView>
+      <View style={{ height: 200 }} />
+      {getChildren(props, 0, callback)}
+    </ScrollView>
+  );
 }
 
-
 function getChildren(
-    props: EasyListProps,
-    firstIndex: number, callback: (index: number, height: number, width: number) => void
+  props: EasyListProps,
+  firstIndex: number,
+  callback: (index: number, height: number, width: number) => void
 ): React.ReactNodeArray {
-    const children = props.children || [];
-    const maxIndex = children.length - 1;
-    if (maxIndex < 0) {
-        return children;
-    }
-    firstIndex = Math.max(firstIndex, 0);
-    const aheadCount = props.aheadCount;
-    const min = Math.max(0, firstIndex - aheadCount);
-    const max = Math.min(maxIndex, firstIndex + aheadCount);
-    const res = new Array<React.ReactNode>(max - min + 1);
-    for (let i = min; i <= max; i++) {
-        res[i - min] = <View onLayout={(event: LayoutChangeEvent) => {
-            const height = event.nativeEvent.layout.height;
-            const width = event.nativeEvent.layout.width;
-            callback(i, height, width);
-        }}>{children[i]}</View>;
-    }
-    return res;
+  const children = props.children || [];
+  const maxIndex = children.length - 1;
+  if (maxIndex < 0) {
+    return children;
+  }
+  firstIndex = Math.max(firstIndex, 0);
+  const aheadCount = props.aheadCount;
+  const min = Math.max(0, firstIndex - aheadCount);
+  const max = Math.min(maxIndex, firstIndex + aheadCount);
+  const res = new Array<React.ReactNode>(max - min + 1);
+  for (let i = min; i <= max; i++) {
+    res[i - min] = (
+      <View
+        onLayout={(event: LayoutChangeEvent) => {
+          const height = event.nativeEvent.layout.height;
+          const width = event.nativeEvent.layout.width;
+          callback(i, height, width);
+        }}
+      >
+        {children[i]}
+      </View>
+    );
+  }
+  return res;
 }
 
 //#if [TEST]
