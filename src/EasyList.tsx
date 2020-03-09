@@ -4,7 +4,7 @@ import { ScrollView, View } from "react-native-web";
 
 export interface EasyListProps {
   aheadCount: number;
-  children: React.ReactNode[];
+  children: React.ReactNodeArray | undefined;
 }
 
 export function EasyList(props: EasyListProps) {
@@ -12,24 +12,34 @@ export function EasyList(props: EasyListProps) {
   const genericKey = "g";
   return (
     <ScrollView>
-      {props.children.map(item => (
-        <View key={genericKey}>{item}</View>
-      ))}
+      <View style={{ height: 600 }} />
+      {getChildren(props, 0)}
     </ScrollView>
   );
 }
 
-function getChildren(props: EasyListProps): React.ReactNode {
-  const maxIndex = props.children.length - 1;
+export function a(t: number): number {
+  return t;
+}
+
+function getChildren(
+  props: EasyListProps,
+  firstIndex: number
+): React.ReactNodeArray {
+  const children = props.children || [];
+  const maxIndex = children.length - 1;
   if (maxIndex < 0) {
-    return undefined;
+    return children;
   }
+  firstIndex = Math.max(firstIndex, 0);
   const aheadCount = props.aheadCount;
-  const firstIndex = 0;
   const min = Math.max(0, firstIndex - aheadCount);
   const max = Math.min(maxIndex, firstIndex + aheadCount);
   const res = new Array<React.ReactNode>(max - min + 1);
   for (let i = min; i <= max; i++) {
-    res[i - min] = <View>{props.children[i]}</View>;
+    res[i - min] = <View>{children[i]}</View>;
   }
+  return res;
 }
+
+export { getChildren };
