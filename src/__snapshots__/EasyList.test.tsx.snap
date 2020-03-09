@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Case: Response Format 1`] = `
+Array [
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+]
+`;
+
+exports[`Case: Response Format 2`] = `
+Array [
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+]
+`;
+
+exports[`Case: Response Format 3`] = `
+Array [
+  <View
+    onLayout={[Function]}
+  />,
+  <View
+    onLayout={[Function]}
+  />,
+]
+`;
