@@ -1,15 +1,20 @@
 import * as React from "react";
 import { useState } from "react";
 import { ScrollView, View, LayoutChangeEvent } from "react-native";
-
-export interface EasyListProps {
-  aheadCount: number;
-  children: React.ReactNodeArray | undefined;
-}
+import { EasyListProps } from "./types/EasyListProps";
+import { VisibleWindow } from "./types/VisibleWindow";
 
 export function EasyList(props: EasyListProps) {
-  const initialValue: Record<number, number[]> = {};
-  const [heightTracker] = useState(initialValue);
+  const initialHeightTracker: Record<number, number[]> = {};
+  const initialWindow: VisibleWindow = {
+    heightTillMin: 0,
+    minCaptureOffset: 0,
+    maxCaptureOffset: 0,
+    min: 0,
+    max: 0
+  };
+  const [heightTracker] = useState(initialHeightTracker);
+  const [visibleWindow, setVisibleWindow] = useState(initialWindow);
   const callback = (index: number, height: number, width: number): void => {
     heightTracker[index] = [height, width];
   };
