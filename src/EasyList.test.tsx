@@ -1,6 +1,7 @@
-import { getChildren, EasyListProps } from "./EasyList";
+import { getChildren } from "./EasyList";
 import { Text } from "react-native";
 import React from "react";
+import { EasyListProps } from "./types/EasyListProps";
 
 function getChildrenDataGen(
     childCount: number,

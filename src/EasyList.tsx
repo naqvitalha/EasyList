@@ -3,15 +3,16 @@ import { useState } from "react";
 import { ScrollView, View, LayoutChangeEvent } from "react-native";
 import { EasyListProps } from "./types/EasyListProps";
 import { VisibleWindow } from "./types/VisibleWindow";
+import { Queue } from "./ds/Queue";
 
 export function EasyList(props: EasyListProps) {
   const initialHeightTracker: Record<number, number[]> = {};
   const initialWindow: VisibleWindow = {
-    heightTillMin: 0,
+    paddingTillMin: 0,
     minCaptureOffset: 0,
-    maxCaptureOffset: 0,
     min: 0,
-    max: 0
+    max: 0,
+    size: 0
   };
   const [heightTracker] = useState(initialHeightTracker);
   const [visibleWindow, setVisibleWindow] = useState(initialWindow);
@@ -55,6 +56,10 @@ function getChildren(
     );
   }
   return res;
+}
+
+function updatePool(prevMin: number, prevMax:number, newMin:number, newMax:number, pool: Queue<number>, indexKeyMap: Record<number, number>): void {
+  
 }
 
 //#if [TEST]
