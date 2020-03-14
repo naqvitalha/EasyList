@@ -59,9 +59,19 @@ function getChildren(
 }
 
 function updatePool(prevMin: number, prevMax:number, newMin:number, newMax:number, pool: Queue<number>, indexKeyMap: Record<number, number>): void {
-  
+    const maxMin = Math.min(prevMax, newMin - 1);
+    for(let i = prevMin; i <= maxMin; i++) {
+        pool.add(indexKeyMap[i]);
+        delete indexKeyMap[i];
+    }
+
+    const maxMax = Math.max(prevMin, newMax + 1);
+    for(let i = maxMax; i <= prevMax; i++) {
+        pool.add(indexKeyMap[i]);
+        delete indexKeyMap[i];
+    }
 }
 
 //#if [TEST]
-export { getChildren };
+export { getChildren, updatePool };
 //#endif

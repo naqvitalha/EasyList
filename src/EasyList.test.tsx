@@ -1,7 +1,8 @@
-import { getChildren } from "./EasyList";
+import { getChildren, updatePool } from "./EasyList";
 import { Text } from "react-native";
 import React from "react";
 import { EasyListProps } from "./types/EasyListProps";
+import { Queue } from "./ds/Queue";
 
 function getChildrenDataGen(
     childCount: number,
@@ -14,7 +15,21 @@ function getChildrenDataGen(
 function callback(index: number, height: number, width: number) {
     //no-op
 }
-
+function generateIndexKeyMay(size: number): Record<number, number> {
+    const indexKeyMap: Record<number, number> = { };
+    for(let i = 0; i < 100; i++) {
+        indexKeyMap[i] = i;
+    }
+    return indexKeyMap;
+}
+function matchQueueWithArray(queue:Queue<number>, arr: number[]): boolean {
+    arr.forEach((item) => {
+        if(item !== queue.poll()) {
+            return false;
+        }
+    });
+    return true;
+}
 test("Case: No Children or Undefined", () => {
     const props = getChildrenDataGen(0, 0);
     expect(getChildren(props, 0, callback).length).toBe(0);
@@ -47,4 +62,52 @@ test("Case: Response Format", () => {
         return <Text>Test me</Text>;
     });
     expect(getChildren(data1, 8, callback)).toMatchSnapshot();
+});
+
+test("update pool: Scrolldown, No overlap", ()=>{
+    const indexKeyMap: Record<number, number> = generateIndexKeyMay(100);
+    
+    const queue = new Queue<number>();
+    updatePool(1, 5, 6, 10, queue, indexKeyMap);
+    expect(matchQueueWithArray(queue, [1,2,3,4,5])).toBe(true);
+});
+
+test("update pool: Scrolldown, overlap", ()=>{
+    const indexKeyMap: Record<number, number> = generateIndexKeyMay(100);
+    
+    const queue = new Queue<number>();
+    updatePool(1, 10, 5, 14, queue, indexKeyMap);
+    expect(matchQueueWithArray(queue, [1,2,3,4])).toBe(true);
+});
+
+test("update pool: Scrolldown, max.min match", ()=>{
+    const indexKeyMap: Record<number, number> = generateIndexKeyMay(100);
+    
+    const queue = new Queue<number>();
+    updatePool(1, 5, 5, 9, queue, indexKeyMap);
+    expect(matchQueueWithArray(queue, [1,2,3,4])).toBe(true);
+});
+
+test("update pool: Scrollup, No overlap", ()=>{
+    const indexKeyMap: Record<number, number> = generateIndexKeyMay(100);
+    
+    const queue = new Queue<number>();
+    updatePool(6, 10, 1, 5, queue, indexKeyMap);
+    expect(matchQueueWithArray(queue, [1,2,3,4,5])).toBe(true);
+});
+
+test("update pool: Scrollup, overlap", ()=>{
+    const indexKeyMap: Record<number, number> = generateIndexKeyMay(100);
+    
+    const queue = new Queue<number>();
+    updatePool(5, 14, 1, 10, queue, indexKeyMap);
+    expect(matchQueueWithArray(queue, [11,12,13,14])).toBe(true);
+});
+
+test("update pool: Scrollup, max.min match", ()=>{
+    const indexKeyMap: Record<number, number> = generateIndexKeyMay(100);
+    
+    const queue = new Queue<number>();
+    updatePool(5, 9, 1, 5, queue, indexKeyMap);
+    expect(matchQueueWithArray(queue, [6,7,8,9])).toBe(true);
 });
